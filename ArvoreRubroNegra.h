@@ -1,6 +1,7 @@
 #ifndef ARVORE_RUBRONEGRA_H
 #define ARVORE_RUBRONEGRA_H
 
+#include "Utils.h"
 #include "TAD_Arvore.h"
 
 #include "Operacoes/0_struct_Arvore.h"

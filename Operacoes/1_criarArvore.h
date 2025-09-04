@@ -11,7 +11,7 @@ pDArvore criarArvoreRubroNegra(){
     dArvore->sentinela      = malloc(sizeof(NohArvore));
     dArvore->sentinela->cor = BLACK;
 
-    // o sentinela é a raiz da árvore
+    // o sentinela Ã© a raiz da Ã¡rvore
     dArvore->raiz           = dArvore->sentinela;
 
     return dArvore;

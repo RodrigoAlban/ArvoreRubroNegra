@@ -27,7 +27,7 @@ pNohArvore tio(pNohArvore raiz){
         return NULL;
     if (raiz->pai == NULL)
         return NULL;
-    if (raiz->pai->pai == NULL)   // avo
+    if (raiz->pai->pai == NULL)   // avÃ´
         return NULL;
 
     pNohArvore avo = raiz->pai->pai;
@@ -61,7 +61,7 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *inf
         filho = incluirInfoRecursivo(raiz->esquerda, sentinela,
                                               info, pfc, raiz);
          if (filho->direita == raiz){
-            // houve rotação a direita, não precisa alterar o filho esquerda,
+            // houve rotaÃ§Ã£o a direita, nÃ£o precisa alterar o filho esquerda,
             // somente ajusta a raiz para apontar para o filho
             raiz = filho;
          } else {
@@ -73,7 +73,7 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *inf
         filho = incluirInfoRecursivo(raiz->direita, sentinela,
                                               info, pfc, raiz);
         if (filho->esquerda == raiz){
-           // houve rotação a esquerda, não precisa alterar o filho esquerda,
+           // houve rotaÃ§Ã£o a esquerda, nÃ£o precisa alterar o filho esquerda,
            // somente ajusta a raiz para apontar para o filho
            raiz = filho;
         } else {
@@ -83,29 +83,34 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *inf
     }
 
     if (raiz->cor == BLACK)
-        // não violou nenhuma propriedade da RN
+        // nÃ£o violou nenhuma propriedade da RN
         return raiz;
 
     if (filho->cor == RED){
-        // violação de propriedade
+        // violaÃ§Ã£o de propriedade
         pNohArvore titio = tio(filho);
 
         if (titio == NULL)
             return raiz;
         if (titio->cor == RED){
-            // é suficiente recolorir
+            // Ã© suficiente recolorir
             raiz->cor     = BLACK;
             titio->cor    = BLACK;
             raiz->pai->cor = RED;
         }
         else{
-
+            // validando qual rotaÃ§Ã£o irÃ¡ fazer
             pNohArvore novaRaiz;
+            if (titio->info == raiz->pai->direita->info){    // vendo qual lado estÃ¡ o tio         
             printf("\n Rotacao direita %d", *((int*)raiz->info));
             novaRaiz = rotacaoDireita(raiz->pai);
-            printf("\n Após Rotacao direita %d", *((int*)novaRaiz->info));
-            return novaRaiz;
-
+            printf("\n ApÃ³s Rotacao direita %d", *((int*)novaRaiz->info));
+            } else {
+                printf("\n RotaÃ§ao esquerda %d", *((int*)raiz->info));
+                novaRaiz = rotacaoDireita(raiz->pai);
+                printf("\n ApÃ³s RotaÃ§Ã£o esquerda %d", *((int*)novaRaiz->info));
+            }
+        return novaRaiz;
         }
     }
 
