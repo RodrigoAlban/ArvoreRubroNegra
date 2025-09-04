@@ -27,8 +27,8 @@ int main(){
 
    //constroiArvore(ex1, 4);
    //constroiArvore(ex1_1, 3);
-   constroiArvore(ex1_2, 3);
-   //constroiArvore(ex1_3, 3);
+   //constroiArvore(ex1_2, 3);
+   constroiArvore(ex1_3, 3);
    //constroiArvore(ex2, 6);
    //constroiArvore(ex3, 6);
    //constroiArvore(ex4, 6);

@@ -1,54 +1,74 @@
 #ifndef INCLUIR_INFO_RUBRO_NEGRA_H
 #define INCLUIR_INFO_RUBRO_NEGRA_H
 
-pNohArvore rotacaoDireita(pNohArvore raiz){
+pNohArvore rotacaoDireita(pNohArvore raiz)
+{
 
     pNohArvore pai = raiz->pai;
 
     // ajusta as cores
-    raiz->esquerda->cor      = BLACK;
+    raiz->esquerda->cor = BLACK;
     raiz->cor = RED;
 
     // ajusta os pais
     raiz->esquerda->pai = pai;
-    raiz->pai          = raiz->direita;
+    raiz->pai = raiz->direita;
 
     pNohArvore temp = NULL;
-    temp           = raiz->esquerda;
+    temp = raiz->esquerda;
     raiz->esquerda = temp->direita;
-    temp->direita  = raiz;
+    temp->direita = raiz;
     return temp;
 }
 
+pNohArvore rotacaoEsquerda(pNohArvore raiz){
+    pNohArvore pai = raiz->pai;
 
+    // ajusta as cores
+    raiz->direita->cor = BLACK;
+    raiz->cor = RED;
 
-pNohArvore tio(pNohArvore raiz){
-    if(raiz == NULL)
+    // ajusta os pais
+    raiz->direita->pai = pai;
+    raiz->pai = raiz->esquerda;
+
+    pNohArvore temp = NULL;
+    temp = raiz->direita;
+    raiz->direita = temp->esquerda;
+    temp->esquerda = raiz;
+    return temp;
+}
+
+pNohArvore tio(pNohArvore raiz)
+{
+    if (raiz == NULL)
         return NULL;
     if (raiz->pai == NULL)
         return NULL;
-    if (raiz->pai->pai == NULL)   // avô
+    if (raiz->pai->pai == NULL) // avô
         return NULL;
 
     pNohArvore avo = raiz->pai->pai;
 
-    if(avo->esquerda == raiz->pai)
-       return avo->direita;
+    if (avo->esquerda == raiz->pai)
+        return avo->direita;
     return avo->esquerda;
 }
 
 /* ---------------------------------------------------------------------*/
-pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *info, FuncaoComparacao pfc, pNohArvore pai){
+pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *info, FuncaoComparacao pfc, pNohArvore pai)
+{
 
     // caso base
-    if(raiz == sentinela){
+    if (raiz == sentinela)
+    {
 
         // incluir
-        pNohArvore novo = malloc (sizeof(NohArvore));
-        novo->info     = info;
+        pNohArvore novo = malloc(sizeof(NohArvore));
+        novo->info = info;
         novo->esquerda = sentinela;
-        novo->direita  = sentinela;
-        novo->cor      = RED;
+        novo->direita = sentinela;
+        novo->cor = RED;
 
         novo->pai = pai;
         return novo;
@@ -56,61 +76,73 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *inf
 
     pNohArvore filho;
 
-    if(pfc(raiz->info, info) <= 0){
+    if (pfc(raiz->info, info) <= 0)
+    {
 
         filho = incluirInfoRecursivo(raiz->esquerda, sentinela,
-                                              info, pfc, raiz);
-         if (filho->direita == raiz){
+                                     info, pfc, raiz);
+        if (filho->direita == raiz)
+        {
             // houve rotação a direita, não precisa alterar o filho esquerda,
             // somente ajusta a raiz para apontar para o filho
             raiz = filho;
-         } else {
+        }
+        else
+        {
             raiz->esquerda = filho;
-         }
-
+        }
     }
-    else{
+    else
+    {
         filho = incluirInfoRecursivo(raiz->direita, sentinela,
-                                              info, pfc, raiz);
-        if (filho->esquerda == raiz){
-           // houve rotação a esquerda, não precisa alterar o filho esquerda,
-           // somente ajusta a raiz para apontar para o filho
-           raiz = filho;
-        } else {
+                                     info, pfc, raiz);
+        if (filho->esquerda == raiz)
+        {
+            // houve rotação a esquerda, não precisa alterar o filho esquerda,
+            // somente ajusta a raiz para apontar para o filho
+            raiz = filho;
+        }
+        else
+        {
             raiz->direita = filho;
         }
-
     }
 
     if (raiz->cor == BLACK)
         // não violou nenhuma propriedade da RN
         return raiz;
 
-    if (filho->cor == RED){
+    if (filho->cor == RED)
+    {
         // violação de propriedade
         pNohArvore titio = tio(filho);
 
         if (titio == NULL)
             return raiz;
-        if (titio->cor == RED){
+        if (titio->cor == RED)
+        {
             // é suficiente recolorir
-            raiz->cor     = BLACK;
-            titio->cor    = BLACK;
+            raiz->cor = BLACK;
+            titio->cor = BLACK;
             raiz->pai->cor = RED;
         }
-        else{
+        else
+        {
             // validando qual rotação irá fazer
             pNohArvore novaRaiz;
-            if (titio->info == raiz->pai->direita->info){    // vendo qual lado está o tio         
-            printf("\n Rotacao direita %d", *((int*)raiz->info));
-            novaRaiz = rotacaoDireita(raiz->pai);
-            printf("\n Após Rotacao direita %d", *((int*)novaRaiz->info));
-            } else {
-                printf("\n Rotaçao esquerda %d", *((int*)raiz->info));
+            if (titio->info == raiz->pai->direita->info)
+            { // vendo qual lado está o tio
+                printf("\n Rotacao direita %d", *((int *)raiz->info));
                 novaRaiz = rotacaoDireita(raiz->pai);
-                printf("\n Após Rotação esquerda %d", *((int*)novaRaiz->info));
+                printf("\n Após Rotacao direita %d", *((int *)novaRaiz->info));
             }
-        return novaRaiz;
+            else
+            {
+                printf("\n Rotaçao esquerda %d", *((int *)raiz->info));
+                novaRaiz = rotacaoEsquerda(raiz->pai);
+                printf("\n Após Rotação esquerda %d", *((int *)novaRaiz->info));
+            }
+            return novaRaiz;
         }
     }
 
@@ -118,9 +150,10 @@ pNohArvore incluirInfoRecursivo(pNohArvore raiz, pNohArvore sentinela, void *inf
 }
 
 /* ----------------------------------------------------------*/
-void incluirInfo(pDArvore arvore, void *info, FuncaoComparacao pfc){
+void incluirInfo(pDArvore arvore, void *info, FuncaoComparacao pfc)
+{
 
-    printf("\n ----------- Incluindo info: %d ---\n", *((int*)info));
+    printf("\n ----------- Incluindo info: %d ---\n", *((int *)info));
     arvore->raiz = incluirInfoRecursivo(arvore->raiz, arvore->sentinela, info, pfc, NULL);
     arvore->raiz->cor = BLACK;
     arvore->quantidadeNohs++;
@@ -128,4 +161,3 @@ void incluirInfo(pDArvore arvore, void *info, FuncaoComparacao pfc){
 }
 
 #endif
-
