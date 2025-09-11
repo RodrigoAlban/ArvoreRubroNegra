@@ -10,7 +10,6 @@ struct nohArvore{
    void*              info;
    struct nohArvore  *esquerda;
    struct nohArvore  *direita;
-
    char               cor;
    struct nohArvore  *pai;
 };
